@@ -1,0 +1,85 @@
+# Main configuration file for HaloPlex analysis
+settings:
+  target_generator_handler: ratatosk.job.generic_target_generator
+  
+ratatosk.lib.utils.misc:
+  ResyncMates:
+    parent_task: 
+      - ratatosk.lib.utils.cutadapt.Cutadapt
+      - ratatosk.lib.utils.cutadapt.Cutadapt
+ratatosk.lib.utils.cutadapt:
+  Cutadapt:
+    parent_task:
+      - ratatosk.lib.utils.cutadapt.InputFastqFile
+      - ratatosk.lib.tools.fastqc.FastQC
+
+ratatosk.lib.tools.fastqc:
+  FastQC:
+    parent_task: ratatosk.lib.utils.cutadapt.InputFastqFile
+
+ratatosk.lib.align.bwa:
+  Aln:
+    parent_task: ratatosk.lib.utils.misc.ResyncMates
+  Sampe:
+    label: .trimmed.sync
+    add_label:
+      - _R1_001.trimmed.sync
+      - _R2_001.trimmed.sync
+  Bampe:
+    label: .trimmed.sync
+    add_label:
+      - _R1_001.trimmed.sync
+      - _R2_001.trimmed.sync
+
+ratatosk.lib.tools.picard:
+  SortSam:
+    parent_task: ratatosk.lib.align.bwa.Bampe
+  MergeSamFiles:
+    parent_task: ratatosk.lib.tools.picard.SortSam
+    #target_generator_handler:
+  DuplicationMetrics:
+    parent_task: ratatosk.lib.tools.picard.MergeSamFiles
+  AlignmentMetrics:
+    parent_task: ratatosk.lib.tools.picard.MergeSamFiles
+  InsertMetrics:
+    parent_task: ratatosk.lib.tools.picard.MergeSamFiles
+  HsMetrics:
+    parent_task: ratatosk.lib.tools.picard.MergeSamFiles
+
+ratatosk.lib.tools.gatk:
+  RealignerTargetCreator:
+    parent_task: ratatosk.lib.tools.picard.MergeSamFiles
+  IndelRealigner:
+    parent_task:
+    - ratatosk.lib.tools.picard.MergeSamFiles
+    - ratatosk.lib.tools.gatk.RealignerTargetCreator
+    - ratatosk.pipeline.haloplex.RawUnifiedGenotyper
+  BaseRecalibrator:
+    parent_task: ratatosk.lib.tools.gatk.IndelRealigner
+  PrintReads:
+    diff_label:
+      - .realign
+      - 
+    parent_task:
+      - ratatosk.lib.tools.picard.MergeSamFiles
+      - ratatosk.lib.tools.gatk.BaseRecalibrator
+  ClipReads:
+    parent_task: ratatosk.lib.tools.gatk.PrintReads
+  UnifiedGenotyper:
+    parent_task: ratatosk.lib.tools.gatk.ClipReads
+  VariantEval:
+    parent_task: ratatosk.pipeline.haloplex.VariantHaloFiltration
+
+ratatosk.pipeline.haloplex:
+  VariantHaloFiltration:
+    parent_task: ratatosk.lib.tools.gatk.UnifiedGenotyper
+
+ratatosk.lib.variation.htslib:
+  VcfMerge:
+    # target_generator_handler:
+
+ratatosk.lib.variation.tabix:
+  Bgzip:
+    parent_task: ratatosk.lib.tools.gatk.VariantFiltration
+
+

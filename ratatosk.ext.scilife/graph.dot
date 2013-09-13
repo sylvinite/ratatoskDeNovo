@@ -1,0 +1,22 @@
+strict digraph {
+	graph [bb="0,0,60,36",
+		size=12
+	];
+	node [label="\N"];
+	"HaloPlex(config_file=/root/opt/ratatosk.ext.scilife/ratatosk/ext/scilife/../../.\
+./config/scilife/haloplex.yaml, custom_config=None, dry_run=False, restart=False\
+, restart_from=None, options=(), parent_task=(), num_threads=1, pipe=False, targ\
+et=None, suffix=(), use_long_names=False, use_target_names=False, label=None, di\
+ff_label=None, add_label=None, exe_path=None, target_generator_handler=None, ind\
+ir=/home/kevlar/RataTUSK/data/subset/, outdir=/home/kevlar/RataTUSK/data/subset/\
+, target_generator_file=None, sample=(), flowcell=(), lane=())"	 [fillcolor=green,
+		fontcolor=white,
+		fontname=Helvetica,
+		fontsize=11,
+		height="0.5",
+		label=HaloPlex,
+		pos="30,18",
+		shape=box,
+		style=filled,
+		width="0.83333"];
+}

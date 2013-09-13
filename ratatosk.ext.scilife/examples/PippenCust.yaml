@@ -1,0 +1,6 @@
+# Project configuration file
+# Change ~/opt/ to the prefix preceding the ngs.test.data installation directory
+ratatosk.lib.utils.cutadapt:
+  Cutadapt:
+    parent_task:
+      - ratatosk.lib.utils.cutadapt.InputFastqFile

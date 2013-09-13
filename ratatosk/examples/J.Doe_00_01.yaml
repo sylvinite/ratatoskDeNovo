@@ -1,0 +1,34 @@
+# Project configuration file
+settings:
+  target_generator_handler: test.site_functions.target_generator
+
+bwa:
+  Aln:
+    # NB: shouldn't work since this is a custom config file
+    parent_task: ratatosk.lib.align.bwa.Sampe
+    # However this should work
+    options: [-e 2 -l 40]
+  
+samtools:
+  SamToBam:
+    parent_task: ratatosk.lib.align.bwa.Sampe
+
+picard:
+  MergeSamFiles:
+    parent_task: ratatosk.lib.tools.picard.SortSam
+    target_generator_handler: test.site_functions.collect_sample_runs
+  SortSam:
+    parent_task: ratatosk.lib.tools.samtools.SamToBam
+
+
+gatk:
+  ref: ~/opt/ngs_test_data/data/genomes/Hsapiens/hg19/seq/chr11.fa
+  knownSites: 
+    - ~/opt/ngs_test_data/data/genomes/Hsapiens/hg19/variation/dbsnp132_chr11.vcf
+  dbsnp: ~/opt/ngs_test_data/data/genomes/Hsapiens/hg19/variation/dbsnp132_chr11.vcf
+
+  RealignerTargetCreator:
+    options:
+  IndelRealigner:
+    options:
+

@@ -1,0 +1,4 @@
+drmaa >= 0.5
+ratatosk >= 0.1.0
+cutadapt
+texttable
