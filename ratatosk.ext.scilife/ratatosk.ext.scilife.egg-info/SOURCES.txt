@@ -10,6 +10,7 @@ ratatosk/ext/scilife/__init__.py
 ratatosk/ext/scilife/bcbio.py
 ratatosk/ext/scilife/config.py
 ratatosk/ext/scilife/sample.py
+scripts/ratatosk_run_MOD.py
 scripts/ratatosk_run_scilife.py
 scripts/ratatosk_submit_job.py
 scripts/resyncMates.pl
